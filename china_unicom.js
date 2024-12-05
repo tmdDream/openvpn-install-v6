@@ -4,11 +4,11 @@ let body = $request.body;
 
 if (body) {
     try {
-        // 假设请求体是一个 JSON 格式的字符串
-        let jsonBody = JSON.parse(body);
-        
-        // 提取 `token_online` 参数
-        let tokenOnline = jsonBody.token_online;
+        // 解析 URL 编码的请求体
+        let params = new URLSearchParams(body);
+
+        // 使用 `get` 方法提取 `token_online` 参数
+        let tokenOnline = params.get('token_online');
         
         if (tokenOnline) {
             // 使用 $notify 进行信息通知
