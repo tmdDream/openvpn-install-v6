@@ -1,15 +1,21 @@
-// jd_uuid.js
+// jd_streamuuid.js
 
-const body = $request.body; // 获取请求体
-if (body) {
-  const params = new URLSearchParams(body); // 使用 URLSearchParams 解析请求体
-  const uuid = params.get('uuid'); // 获取 uuid 参数
-  if (uuid) {
-    console.log(`UUID: ${uuid}`); // 输出 UUID，方便在调试中查看
-    // 这里可以进行其他处理，比如储存UUID或修改请求体
+// 获取响应体
+let body = $response.body;
+
+try {
+  // 将响应体解析为JSON对象
+  let obj = JSON.parse(body);
+
+  // 提取streamuuid
+  if (obj.streamuuid) {
+    console.log(`streamuuid: ${obj.streamuuid}`); // 输出到日志
+    // 如果需要在这里做进一步的数据处理
   } else {
-    console.log('UUID not found!');
+    console.log("streamuuid not found!");
   }
+} catch (e) {
+  console.log('Error parsing response body:', e); // 错误处理
 }
 
-$done({}); // 完成脚本，继续请求处理
+$done({ body }); // 返回原始响应体，不做额外修改
