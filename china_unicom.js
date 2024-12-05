@@ -3,6 +3,7 @@ Quantumult X Script: Extract token_online from request
 */
 
 var requestBody = $request.body;
+console.log(requestBody);
 var tokenMatch = requestBody.match(/token_online=([^&]*)/);
 
 if (tokenMatch) {
