@@ -5,23 +5,24 @@ let body = $request.body;
 
 if (body) {
     try {
-        // 输出请求体内容到通知，方便查看
-        $notify("Request Body Captured", "Body Content", body);
-        
-        // 如果请求体是 URL 编码的，可以进一步解析
+        // 输出请求体，检查格式
+        console.log("Request Body: " + body);
+
+        // 初始化 URLSearchParams 来解析 URL 编码的请求体
         let params = new URLSearchParams(body);
         
-        // 获取特定参数，例如 'token_online'，如果存在
+        // 假设我们要获取 'token_online' 参数
         let tokenOnline = params.get('token_online');
         
-        // 如果你需要处理 token_online，可以通知或者存储
         if (tokenOnline) {
+            // 使用通知展示提取的参数
             $notify("Token Found", "token_online", tokenOnline);
+            // 持久化存储 (如果需要)
             $persistentStore.write(tokenOnline, "token_online_key");
         }
         
     } catch (error) {
-        // 处理解析错误，通知用户
+        // 捕获并通知解析错误
         $notify("Script Error", "Error processing the request body", error.message);
     }
 }
