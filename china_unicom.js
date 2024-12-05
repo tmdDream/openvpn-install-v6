@@ -1,24 +1,30 @@
-/*
-Quantumult X Script: Extract token_online from request
-*/
+// get_token.js
 
-var requestBody = $request.body;
-console.log(requestBody);
-var tokenMatch = requestBody.match(/token_online=([^&]*)/);
+// Quantumult X 提供的环境对象
+let body = $request.body;  // 获取请求体
 
-if (tokenMatch) {
-  var token = tokenMatch[1];
-  console.log("Extracted token_online: " + token);
+if (body) {
+    try {
+        // 假设请求体是一个 JSON 格式的字符串
+        let jsonBody = JSON.parse(body);
+        
+        // 提取 `token_online` 参数
+        let tokenOnline = jsonBody.token_online;
+        
+        if (tokenOnline) {
+            // 在控制台输出（调试用），你也可以选择其他存储或输出方式
+            console.log("token_online:", tokenOnline);
+            
+            // 可以选择存储 token_online 到环境变量等
+            $notify("Token Found", "token_online", tokenOnline);
 
-  // 检查并更新存储的 token
-  let cookies = $persistentStore.read("chinaUnicomCookie") || "";
-  if (!cookies.includes(token)) {
-    cookies = cookies ? cookies + "&" + token : token;
-    $persistentStore.write(cookies, "chinaUnicomCookie");
-    console.log("Updated chinaUnicomCookie: " + cookies);
-  }
-} else {
-  console.log("token_online not found in request body.");
+            // 如果希望后续处理这个 token，可以将它保存到环境
+            $persistentStore.write(tokenOnline, "token_online_key");
+        }
+        
+    } catch (error) {
+        console.error("Error parsing the request body:", error);
+    }
 }
 
 $done({});
