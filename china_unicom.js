@@ -1,7 +1,6 @@
 // get_token.js
 
-// Quantumult X 提供的环境对象
-let body = $request.body;  // 获取请求体
+let body = $request.body;
 
 if (body) {
     try {
@@ -12,10 +11,7 @@ if (body) {
         let tokenOnline = jsonBody.token_online;
         
         if (tokenOnline) {
-            // 在控制台输出（调试用），你也可以选择其他存储或输出方式
-            console.log("token_online:", tokenOnline);
-            
-            // 可以选择存储 token_online 到环境变量等
+            // 使用 $notify 进行信息通知
             $notify("Token Found", "token_online", tokenOnline);
 
             // 如果希望后续处理这个 token，可以将它保存到环境
@@ -23,7 +19,8 @@ if (body) {
         }
         
     } catch (error) {
-        console.error("Error parsing the request body:", error);
+        // 使用 $notify 来显示错误信息
+        $notify("Script Error", "Error parsing the request body", error.message);
     }
 }
 
