@@ -1,26 +1,28 @@
-// get_token.js
+// oneline.js
 
+// 获取请求体
 let body = $request.body;
 
 if (body) {
     try {
-        // 解析 URL 编码的请求体
+        // 输出请求体内容到通知，方便查看
+        $notify("Request Body Captured", "Body Content", body);
+        
+        // 如果请求体是 URL 编码的，可以进一步解析
         let params = new URLSearchParams(body);
-
-        // 使用 `get` 方法提取 `token_online` 参数
+        
+        // 获取特定参数，例如 'token_online'，如果存在
         let tokenOnline = params.get('token_online');
         
+        // 如果你需要处理 token_online，可以通知或者存储
         if (tokenOnline) {
-            // 使用 $notify 进行信息通知
             $notify("Token Found", "token_online", tokenOnline);
-
-            // 如果希望后续处理这个 token，可以将它保存到环境
             $persistentStore.write(tokenOnline, "token_online_key");
         }
         
     } catch (error) {
-        // 使用 $notify 来显示错误信息
-        $notify("Script Error", "Error parsing the request body", error.message);
+        // 处理解析错误，通知用户
+        $notify("Script Error", "Error processing the request body", error.message);
     }
 }
 
